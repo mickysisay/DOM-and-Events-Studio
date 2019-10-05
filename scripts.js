@@ -4,17 +4,17 @@ window.onload = function(){
 }
 // Remember to pay attention to page loading!
 function takeOff(){
-    const takeoff = document.getElementById("takeoff");
+    const takeoff = document.getElementById("takeoff");  
     const shuttleBackground = document.getElementById("shuttleBackground");
     const shuttleHeight = document.getElementById("spaceShuttleHeight");
     const land=document.getElementById("landing");
     const shuttleStatus = document.getElementById("flightStatus");
     const abort = document.getElementById("missionAbort");
     const button = {
-        up:document.getElementById("up"),
-        down:document.getElementById("down"),
-        right:document.getElementById("right"),
-        left:document.getElementById("left")
+        up : document.getElementById("up"),
+        down : document.getElementById("down"),
+        right : document.getElementById("right"),
+        left : document.getElementById("left")
     };
     const rocketImage = document.getElementById("rocket");
    
@@ -49,27 +49,39 @@ function takeOff(){
         rocketImage.style.left = "0px";
     });
     moveRocket(button,rocketImage,shuttleHeight,shuttleBackground);
-    console.log(rocketImage.style.top);
-    // window.addEventListener("resize",()=>{
-    //    shuttleBackground.style.width;
-    //    shuttleBackground.style.height;
-    // });
+    window.addEventListener("resize",()=>{
+        rocketImage.style.top = parseInt(shuttleBackground.clientHeight)-75+"px";
+        rocketImage.style.left = "0px";
+        shuttleHeight.innerHTML = 0;       
+    });
+    window.addEventListener("keydown",(e)=>{
+        e.preventDefault();
+        if(e.keyCode === 38  && parseInt(rocketImage.style.top) >0){
+            rocketImage.style.top = (parseInt(rocketImage.style.top)-10)+"px";    
+            shuttleHeight.innerHTML = parseInt(shuttleHeight.innerHTML)+10000;
+        }else if(e.keyCode===40 && parseInt(rocketImage.style.top)< parseInt(shuttleBackground.clientHeight)-75){
+            rocketImage.style.top = (parseInt(rocketImage.style.top)+10)+"px";
+            shuttleHeight.innerHTML = parseInt(shuttleHeight.innerHTML)-10000;
+         }else if(e.keyCode ===37 &&  parseInt(rocketImage.style.left) > -1 * (parseInt(shuttleBackground.clientWidth)/2)+37.5){
+            rocketImage.style.left = (parseInt(rocketImage.style.left)-10)+"px";
+         }else if(e.keyCode ===39 && parseInt(rocketImage.style.left) < (parseInt(shuttleBackground.clientWidth)/2)-37.5){
+            rocketImage.style.left = (parseInt(rocketImage.style.left)+10)+"px";
+         }  
+    });
 }
+
 function moveRocket(theButtons,imageToMove,heightToChange,background){
     for(let buttons in theButtons ){
         theButtons[buttons].addEventListener("click",()=>{
-        // console.log(imageToMove.style.top);
          if(buttons ==="up"  && parseInt(imageToMove.style.top) >0){
             imageToMove.style.top = (parseInt(imageToMove.style.top)-10)+"px";    
             heightToChange.innerHTML = parseInt(heightToChange.innerHTML)+10000;
         }else if(buttons==="down" && parseInt(imageToMove.style.top)< parseInt(background.clientHeight)-75){
             imageToMove.style.top = (parseInt(imageToMove.style.top)+10)+"px";
             heightToChange.innerHTML = parseInt(heightToChange.innerHTML)-10000;
-         }else if(buttons ==="left" &&  parseInt(imageToMove.style.left) > -1 * (parseInt(background.clientWidth)/2)+20){
+         }else if(buttons ==="left" &&  parseInt(imageToMove.style.left) > -1 * (parseInt(background.clientWidth)/2)+37.5){
             imageToMove.style.left = (parseInt(imageToMove.style.left)-10)+"px";
-            console.log( parseInt(imageToMove.style.left));
-            console.log(-1 * (parseInt(background.clientWidth)/2));
-         }else if(buttons ==="right" && parseInt(imageToMove.style.left) < (parseInt(background.clientWidth)/2)-20){
+         }else if(buttons ==="right" && parseInt(imageToMove.style.left) < (parseInt(background.clientWidth)/2)-37.5){
             imageToMove.style.left = (parseInt(imageToMove.style.left)+10)+"px";
          }   
         });
